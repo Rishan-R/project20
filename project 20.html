@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <style media="screen">
+      body {
+        background-color: #8CD8FF;
+        margin: 0;
+        font-family: Arial;
+        user-select: none;
+      }
+
+      .container {
+        background-color: white;
+        border-radius: 25px;
+        padding: 15px;
+        margin: 15px;
+      }
+
+      h1 {
+        font-weight: 500;
+      }
+
+      #countDown {
+        padding: 5pt;
+        border-radius: 7pt;
+        background-color: white;
+        border: 1pt solid black;
+        cursor: pointer;
+      }
+
+      #res {
+        display: none;
+      }
+
+      .box {
+        border: 1px solid #706370;
+        padding: 2pt;
+        box-shadow: 1px 1px 2px black;
+        cursor: pointer;
+      }
+
+      .p {
+        cursor: alias;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="d">Countdown Calculator</h1>
+      <span class="d">Enter the date - </span><input type="date" id="date"><br><br>
+      <span class="d">- and enter the time - </span><input type="time" id="time"><br>
+      <p class="d">(This will be what the countdown is counting down to)</p>
+      <button id="countDown" onclick="c();">Tick Tock!</button><br>
+      <p id="res"></p>
+    </div>
+  </body>
+  <script>
+    let date = document.getElementById("date");
+    let time = document.getElementById("time");
+    let btn = document.getElementById("btn");
+    let res = document.getElementById("res");
+    let inter;
+
+
+    function c() {
+      let dv = date.value;
+      let tv = time.value;
+      if (dv == "" || tv == "") {
+        alert("Invalid date or time input.");
+        return false;
+      } else {
+        tv = tv.split(":");
+        let d = Date.now() - (6 * 60 * 60 * 1000);
+        let test = new Date(dv);
+        let test2 = new Date((tv[0] * 60 * 60 * 1000) + (tv[1] * 60 * 1000));
+        let test3 = new Date(test);
+        let test4 = new Date(test2);
+        let d1 = test3.getTime() - -test4.getTime();
+
+        if (d1 <= d) {
+          alert("Invalid date or time input.");
+        } else {
+          if (inter != undefined) {
+            clearInterval(inter);
+          }
+
+          inter = setInterval(function () {
+            let d2 = Date.now() - (6 * 60 * 60 * 1000);
+            let difference = d1 - d2;
+            let weeks = 0;
+            let days = 0;
+            let hours = 0;
+            let minutes = 0;
+            let seconds = 0;
+
+            if (difference > 604800000) {
+              weeks = Math.floor(difference / 604800000);
+              difference = difference % 604800000;
+            }
+
+            if (difference > 86400000) {
+              days = Math.floor(difference / 86400000);
+              difference = difference % 86400000;
+            }
+
+            if (difference > (3600000)) {
+              hours = Math.floor(difference / 3600000);
+              difference = difference % 3600000;
+            }
+
+            if (difference > (60000)) {
+              minutes = Math.floor(difference / 60000);
+              difference = difference % 60000;
+            }
+
+            if (difference > (1000)) {
+              seconds = Math.floor(difference / 1000);
+              difference = difference % 1000;
+            }
+
+            let s = "<span class='box'>";
+            let e = "</span>"
+
+            if (weeks == 0 && days == 0 && hours == 0 && minutes == 0 && seconds == 0) {
+              res.innerHTML = "Beep! Beep! Beep! Your timer is up."
+              clearInterval(inter);
+            } else {
+              res.innerHTML = "You have " + s + weeks + e + " weeks, " + s + days + e + " days, " + s + hours + e + " hours, " + s + minutes + e + " minutes, and " + s + seconds + e + " seconds until your timer goes off.";
+            }
+            res.style.display = "inline-block";
+          }, 1);
+        }
+      }
+    }
+  </script>
+</html>
